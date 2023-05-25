@@ -1,0 +1,66 @@
+#include <iostream>
+using namespace std;
+
+class flight{
+int n,time[10][10];
+string cities[10];
+public:
+ void create();
+ void display();
+ void connectcheck();
+};
+
+void flight::create(){
+  cout<<"Enter the no. of cities:";
+  cin>>n;
+  cout<<"Enter the name of cities:"<<endl;
+  for(int i=0;i<n;i++){
+   cout<<"city "<<i<<"=";
+   cin>>cities[i];
+  }
+  for (int i=0;i<n;i++){
+    for (int j=i;j<n;j++){
+      if (i==j){
+        time[i][j]=0;
+      }
+      else{
+        cout << "Enter the cost to connect " <<cities[i] <<" and " <<cities[j]<< " : ";
+            cin >> time[i][j];
+           time[j][i] = time[i][j];}
+    }
+  }
+}
+void flight::display(){
+  
+    for (int i = 0 ; i < n ; i++) {
+        cout << "\n";
+        for (int j = 0 ; j < n ; j++) {
+            cout << time[i][j] << "\t";
+        }
+   }cout<<endl;
+
+}
+void flight::connectcheck(){
+  string a,b;
+  cout<<"Enter the cities to check whether they are connecte or not?"<<endl;
+  cin>>a>>b;
+  int flag=0;
+  for (int i=0;i<n;i++){
+    for (int j=0;j<n;j++){
+      if((cities[i]==a)&& (cities[j]==b)&& time[i][j]!=0){
+        cout<<endl<<"Cities are connected";
+        cout<<" and time required to connect is "<<time[i][j];
+        flag=1;
+      }
+    }
+  }
+  if (flag==0){
+      cout<<"Cities are not connected.";
+  }
+}
+int main() {
+ flight f;
+  f.create();
+  f.display();
+  f.connectcheck();
+}

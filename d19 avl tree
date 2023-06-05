@@ -31,8 +31,11 @@ public:
     AVLnode* RL (AVLnode*);
     int height (AVLnode*);
     int bFactor (AVLnode*);
-    void inOrder (AVLnode*);
-    void preOrder (AVLnode*);
+    void asend (AVLnode*);
+    void descend (AVLnode*);
+    void search(AVLnode*,int key);
+    void update(AVLnode*root,int key);
+    
 };
 
 
@@ -173,20 +176,61 @@ AVLnode* AVLtree::LR (AVLnode* curr) {
 }
 
 
-void AVLtree::inOrder (AVLnode* curr) {
+void AVLtree::asend(AVLnode* curr) {
     if (curr != NULL) {
-        inOrder (curr -> left);
+       asend(curr -> left);
         cout << "\n\t" << curr -> cWord << "\t" << curr -> cMean;
-        inOrder (curr -> right);
+       descend(curr -> right);
     }
 }
-void AVLtree::preOrder (AVLnode* curr) {
+void AVLtree::descend(AVLnode* curr) {
     if (curr != NULL) {
+        descend(curr -> right);
         cout << "\n\t" << curr -> cWord << "\t" << curr -> cMean;
-        preOrder (curr -> left);
-        preOrder (curr -> right);
+        descend (curr -> left);
     }
 }
+
+void AVLtree:: search(AVLnode*root,int key){
+    AVLnode *curr=root;
+  int cost=0;
+    while(curr!=NULL){
+        if (key>curr->cWord){
+            cost++;
+            curr=curr->right;
+        }
+        else if (key<curr->cWord){
+            cost++;
+            curr=curr->left;
+        }
+         else if (key==curr->cWord){
+           cost++;
+           cout<<"key found at cost: "<<cost;
+           return;
+        }
+    }
+        cout<<"not found";
+    }
+
+void AVLtree:: update(AVLnode*root,int key){
+    AVLnode *curr=root;
+  
+    while(curr!=NULL){
+        if (key>curr->cWord){
+            curr=curr->right;
+        }
+        else if (key<curr->cWord){
+            curr=curr->left;
+        }
+         else if (key==curr->cWord){
+           cout<<"key found enter the meaning to update.";
+           cin>>curr->cMean;
+           return;
+        }
+    }
+        cout<<"key not found";
+    }
+
 
 
 int main () {
@@ -201,7 +245,7 @@ int main () {
     cout << "\n--------------------------------------";
     do {
         cout << "\n\t\tMENU";
-        cout << "\n1.Insert 2.Inorder 3.Delete 4.Exit";
+        cout << "\n1.Insert 2.print ascending 3.print descending 4.Delete 5.search. 6.update 7.exit.";
         cout << "\n--------------------------------";
         cout << "\nEnter your choice: ";
         cin >> ch;
@@ -215,21 +259,36 @@ int main () {
                 avl.Root = avl.insert (avl.Root, word, mean);
                 break;
             case 2:
-                cout << "\nInorder Traversal:\n\tWORD\tMEANING";
-                avl.inOrder (avl.Root);
-                cout << "\n\nPreorder Traversal:\n\tWORD\tMEANING";
-                avl.preOrder (avl.Root);
+                cout << "\n\nascending order: ";
+                avl.asend(avl.Root);
+                cout << '\n';
+                break;    
+            
+            case 3:
+                cout << "\n\ndescending order: ";
+                avl.descend (avl.Root);
                 cout << '\n';
                 break;
-            case 3:
+            case 4:
                 cout << "\nEnter the word to be deleted : ";
                 cin >> word;
                 avl.Root = avl.deletE (avl.Root, word);
                 break;
-            case 4:
-                exit (0);
+            case 5:
+                cout<<"Enter the key to be search: ";
+                int key;
+                cin>>key;
+                avl.search(avl.Root,key);
+                break;
+            case 6:
+                cout<<"Enter the key from where you want to update Meaning: ";
+                cin>>key;
+                avl.update(avl.Root,key);
+                break;
+            case 7:
+                exit(0);
         }
-    } while (ch != 4);
+    } while (ch != 7);
 
     return 0;
 }

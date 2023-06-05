@@ -1,0 +1,125 @@
+###Consider telephone book database of N clients. Make use of a hash table implementation
+to quickly look up client‘s telephone number. Make use of two collision handling
+techniques and compare them using number of comparisons required to find a set of
+telephone numbers###
+
+tablel={}
+tableq={}
+
+def create(b):
+    for i in range (b):
+        tablel[i]=None
+        tableq[i]=None
+
+
+def linsert(b,key):
+   
+    flag=0
+    hash=key%b
+    if tablel[hash]==None :
+        tablel[hash]=key
+    else:
+        for i in range (0,b):
+            hash=(key+i)%b
+            if tablel[hash]==None:
+                tablel[hash]=key
+                flag=1
+                break
+        if(flag==0):
+            print("table is full")
+
+def qinsert(b,key):
+
+    flag=0
+    hash=key%b
+    if (tableq[hash]==None):
+        tableq[hash]=key
+    else:
+        for i in range (0, int((b-1)/2)):
+            hash=(key+(i*i))%b
+            if (tableq[hash]==None):
+                tableq[hash]=key
+                flag=1
+                break
+        if(flag==0):
+            print("table is full or key is not probed")
+            
+            
+
+def lsearch(b,key):
+   
+    flag=0
+    hash=key%b
+    if tablel[hash]==None :
+        print("key is not present.")
+    else:
+        for i in range (0,b):
+            hash=(key+i)%b
+            if tablel[hash]==key:
+                print("key is found at ",hash+1," index.")
+                flag=1
+                break
+        if(flag==0):
+            print("key not found.")
+
+def qsearch(b,key):
+
+    flag=0
+    hash=key%b
+    if (tableq[hash]==None):
+       print("key is not present.")
+    else:
+        for i in range (0, int((b-1)/2)):
+            hash=(key+(i*i))%b
+            if (tableq[hash]==key):
+                print("key is found at ",hash+1," index.")
+                flag=1
+                break
+        if(flag==0):
+            print("key not found.")
+            
+def printtable(b):
+    print("\nlinear probed tabel: \n")
+    for i in range (b):
+        print(tablel[i],end=" | ")
+    print("\nquadratic probed tabel: \n")
+    for i in range (b):
+        print(tableq[i],end=" | ")
+    print("")
+
+            
+b=int(input("Enter the size of tabel: "))
+create(b)
+while(1):
+    ch=int(input("1.lp | 2.qp | 0.quit."))
+ 
+    if ch==1:
+      while(1):
+        ch1=int(input("1.insert | 2.search | 0.exit."))
+        if ch1==1:
+            key=int(input("Enter the key: "))
+            linsert(b,key)
+            printtable(b)
+        elif ch1==2:
+            key=int(input("Enter the key to be searched."))
+            lsearch(b,key)
+        if ch1==0:
+            break
+    
+    if ch==2:
+      while(1):
+        ch2=int(input("1.insert | 2.search | 0.exit."))
+        if ch2==1:
+            key=int(input("Enter the key: "))
+            qinsert(b,key)
+            printtable(b)
+        elif ch2==2:
+            key=int(input("Enter the key to be searched."))
+            qsearch(b,key)
+        if ch2==0:
+            break
+                    
+    if ch==0:
+        print("exited")
+        break
+           
